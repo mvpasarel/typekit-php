@@ -437,35 +437,16 @@ class TypekitClient
         );
 
         $body = $params;
-//        var_dump($body);
-//        die('-');
         $options = compact('headers', 'body');
-//        $options = array_merge($options, array(
-//            'allow_redirects' => true,
-//            'timeout' => 30
-//        ));
 
-
-//        var_dump($options);
-//        die('a');
-
-        try {
-            if ($method == 'GET') {
-                $response = $this->client->get($url, compact('headers'));
-            } else if ($method == 'POST') {
-                $response = $this->client->post($url, $options);
-            } else if ($method == 'DELETE') {
-                $response = $this->client->delete($url, $options);
-            }
-            return $response->json();
-        } catch (RequestException $e) {
-            var_dump($e->getMessage());
-            var_dump($e->getRequest());
-            var_dump($e->getResponse());
-        } catch (\Exception $e) {
-            var_dump($e->getMessage());
+        if ($method == 'GET') {
+            $response = $this->client->get($url, compact('headers'));
+        } else if ($method == 'POST') {
+            $response = $this->client->post($url, $options);
+        } else if ($method == 'DELETE') {
+            $response = $this->client->delete($url, $options);
         }
-        return false;
+        return $response->json();
     }
 
     /**
