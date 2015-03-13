@@ -147,7 +147,7 @@ $typekit->kitRemoveFont($kitId, 'futura-pt');
 ## Testing
 
 ```
-$ phpunit
+$ TYPEKIT_TOKEN=<API token> phpunit
 ```
 
 ## Contributing

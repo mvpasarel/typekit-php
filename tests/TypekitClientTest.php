@@ -11,7 +11,8 @@ class TypekitClientTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->typekit = new TypekitClient('');
+
+        $this->typekit = new TypekitClient(getenv('TYPEKIT_TOKEN'));
     }
 
     public function testListKits()
