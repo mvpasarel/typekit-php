@@ -26,12 +26,12 @@ Initialize the client with your developer API token. You can get your API token 
 $typekit = new \Mvpasarel\Typekit\TypekitClient('<API token>');
 ```
 
-### List kits
+### Get all kits
 
-To list all your kits, use the following command:
+To get all your kits, use the following command:
 
 ```
-$typekit->listKits();
+$typekit->getKits();
 ```
 
 ### Get kit
