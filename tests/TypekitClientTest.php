@@ -7,6 +7,9 @@ use Mvpasarel\Typekit\TypekitClient;
 class TypekitClientTest extends \PHPUnit_Framework_TestCase
 {
 
+    /**
+     * @var TypekitClient
+     */
     private $typekit;
 
     protected function setUp()

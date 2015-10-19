@@ -11,7 +11,7 @@
 
 namespace Mvpasarel\Typekit;
 
-use GuzzleHttp\Exception\RequestException;
+use Guzzle\Http\Client;
 use Mvpasarel\Typekit\Exceptions\NoFontFoundException;
 use Mvpasarel\Typekit\Exceptions\NoKitFoundException;
 use Mvpasarel\Typekit\Exceptions\TypekitException;
@@ -57,7 +57,7 @@ class TypekitClient
     /**
      * Guzzle HTTP Client
      *
-     * @var \GuzzleHttp\Client
+     * @var \Guzzle\Http\Client
      */
     private $client;
 
@@ -78,7 +78,7 @@ class TypekitClient
         $this->token = $token;
         $this->debug = $debug;
         $this->domains = $domains;
-        $this->client = new \GuzzleHttp\Client();
+        $this->client = new Client();
     }
 
     /**
@@ -436,16 +436,17 @@ class TypekitClient
             'User-Agent' => $userAgent,
         );
 
-        $body = $params;
-        $options = compact('headers', 'body');
-
         if ($method == 'GET') {
-            $response = $this->client->get($url, compact('headers'));
+            $request = $this->client->get($url, $headers);
+            $response = $request->send();
         } else if ($method == 'POST') {
-            $response = $this->client->post($url, $options);
+            $request = $this->client->post($url, $headers, $params);
+            $response = $request->send();
         } else if ($method == 'DELETE') {
-            $response = $this->client->delete($url, $options);
+            $request = $this->client->delete($url, $headers, $params);
+            $response = $request->send();
         }
+
         return $response->json();
     }
 
