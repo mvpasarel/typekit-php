@@ -7,6 +7,9 @@ use Mvpasarel\Typekit\TypekitClient;
 class TypekitClientTest extends \PHPUnit_Framework_TestCase
 {
 
+    /**
+     * @var TypekitClient
+     */
     private $typekit;
 
     protected function setUp()
@@ -25,8 +28,8 @@ class TypekitClientTest extends \PHPUnit_Framework_TestCase
     public function testKitCreation()
     {
         $name = 'kit_creation_test';
-        $domains = array('localhost', '*.domain.com');
-        $families = array(array('id' => 'ftnk', 'variations' => 'n3,n4'), array('id' => 'pcpv', 'variations' => 'n4'));
+        $domains = ['localhost', '*.domain.com'];
+        $families = [['id' => 'ftnk', 'variations' => 'n3,n4'], ['id' => 'pcpv', 'variations' => 'n4']];
 
         $res = $this->typekit->createKit($name, $domains, $families);
 
@@ -60,8 +63,8 @@ class TypekitClientTest extends \PHPUnit_Framework_TestCase
     {
 
         $name = 'test_kit_creation';
-        $domains = array('localhost', '*.domain.com');
-        $families = array(array('id' => 'ftnk', 'variations' => 'n3,n4'), array('id' => 'pcpv', 'variations' => 'n4'));
+        $domains = ['localhost', '*.domain.com'];
+        $families = [['id' => 'ftnk', 'variations' => 'n3,n4'], ['id' => 'pcpv', 'variations' => 'n4']];
 
         $res = $this->typekit->createKit($name, $domains, $families);
         $this->assertFalse(in_array('errors', $res));
@@ -106,8 +109,8 @@ class TypekitClientTest extends \PHPUnit_Framework_TestCase
     {
 
         $name = 'test_kit_creation';
-        $domains = array('localhost', '*.domain.com');
-        $families = array(array('id' => 'ftnk', 'variations' => 'n3,n4'), array('id' => 'pcpv', 'variations' => 'n4'));
+        $domains = ['localhost', '*.domain.com'];
+        $families = [['id' => 'ftnk', 'variations' => 'n3,n4'], ['id' => 'pcpv', 'variations' => 'n4']];
 
         $res = $this->typekit->createKit($name, $domains, $families);
         $this->assertFalse(in_array('errors', $res));
@@ -126,8 +129,8 @@ class TypekitClientTest extends \PHPUnit_Framework_TestCase
     public function testKit_addFont()
     {
         $name = 'test_kit_creation';
-        $domains = array('localhost', '*.domain.com');
-        $families = array(array('id' => 'ftnk', 'variations' => 'n3,n4'));
+        $domains = ['localhost', '*.domain.com'];
+        $families = [['id' => 'ftnk', 'variations' => 'n3,n4']];
 
         $res = $this->typekit->createKit($name, $domains, $families);
         $this->assertFalse(in_array('errors', $res));
@@ -139,7 +142,7 @@ class TypekitClientTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->typekit->kitContainsFont($kitId, 'pcpv'));
         $this->assertFalse($this->typekit->kitContainsFont($kitId, 'droid-serif'));
 
-        $this->typekit->kitAddFont($kitId, 'pcpv', array('n4'));
+        $this->typekit->kitAddFont($kitId, 'pcpv', ['n4']);
         $this->typekit->publishKit($kitId);
 
         $this->assertTrue($this->typekit->kitContainsFont($kitId, 'pcpv'));
@@ -152,8 +155,8 @@ class TypekitClientTest extends \PHPUnit_Framework_TestCase
     public function testKitRemoveFont()
     {
         $name = 'test_kit_creation';
-        $domains = array('localhost', '*.domain.com');
-        $families = array(array('id' => 'ftnk', 'variations' => 'n3,n4'), array('id' => 'pcpv', 'variations' => 'n4'));
+        $domains = ['localhost', '*.domain.com'];
+        $families = [['id' => 'ftnk', 'variations' => 'n3,n4'], ['id' => 'pcpv', 'variations' => 'n4']];
 
         $res = $this->typekit->createKit($name, $domains, $families);
         $this->assertFalse(in_array('errors', $res));
@@ -178,8 +181,8 @@ class TypekitClientTest extends \PHPUnit_Framework_TestCase
     public function testGetKitFonts()
     {
         $name = 'test_kit_creation';
-        $domains = array('localhost', '*.domain.com');
-        $families = array(array('id' => 'ftnk', 'variations' => 'n3,n4'), array('id' => 'pcpv', 'variations' => 'n4'));
+        $domains = ['localhost', '*.domain.com'];
+        $families = [['id' => 'ftnk', 'variations' => 'n3,n4'], ['id' => 'pcpv', 'variations' => 'n4']];
 
         $res = $this->typekit->createKit($name, $domains, $families);
         $kitId = $res['kit']['id'];

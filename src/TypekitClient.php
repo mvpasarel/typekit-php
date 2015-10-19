@@ -11,7 +11,7 @@
 
 namespace Mvpasarel\Typekit;
 
-use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Client;
 use Mvpasarel\Typekit\Exceptions\NoFontFoundException;
 use Mvpasarel\Typekit\Exceptions\NoKitFoundException;
 use Mvpasarel\Typekit\Exceptions\TypekitException;
@@ -24,7 +24,7 @@ class TypekitClient
      *
      * @var string
      */
-    private $version = '1.0';
+    private $version = '1.1';
 
     /**
      * Typekit API host
@@ -57,7 +57,7 @@ class TypekitClient
     /**
      * Guzzle HTTP Client
      *
-     * @var \GuzzleHttp\Client
+     * @var Client
      */
     private $client;
 
@@ -68,7 +68,7 @@ class TypekitClient
      * @param bool $debug
      * @throws TypekitException
      */
-    public function __construct($token, $domains = array('localhost'), $debug = false)
+    public function __construct($token, $domains = ['localhost'], $debug = false)
     {
 
         if (!$token) {
@@ -78,7 +78,7 @@ class TypekitClient
         $this->token = $token;
         $this->debug = $debug;
         $this->domains = $domains;
-        $this->client = new \GuzzleHttp\Client();
+        $this->client = new Client();
     }
 
     /**
@@ -120,9 +120,9 @@ class TypekitClient
      * @return bool If successful returns true, else returns false
      * @throws TypekitException
      */
-    private function modifyKit($kitId = null, $name = '', $domains = array(), $families = array())
+    private function modifyKit($kitId = null, $name = '', $domains = [], $families = [])
     {
-        $params = array();
+        $params = [];
 
         if ($name) {
             $params['name'] = $name;
@@ -165,7 +165,7 @@ class TypekitClient
      * @param array $families
      * @return string
      */
-    public function updateKit($kitId, $name = '', $domains = array(), $families = array())
+    public function updateKit($kitId, $name = '', $domains = [], $families = [])
     {
         return $this->modifyKit($kitId, $name, $domains, $families);
     }
@@ -177,7 +177,7 @@ class TypekitClient
      * @param array $families
      * @return mixed
      */
-    public function createKit($name = '', $domains = array(), $families = array())
+    public function createKit($name = '', $domains = [], $families = [])
     {
         $kitId = null;
 
@@ -239,7 +239,7 @@ class TypekitClient
     {
         $font = $this->getFontFamily($font);
 
-        $variations = array();
+        $variations = [];
 
         if (isset($font['family']) && isset($font['family']['variations']) && !empty($font['family']['variations'])) {
             foreach ($font['family']['variations'] as $var) {
@@ -292,19 +292,19 @@ class TypekitClient
      * @param $font
      * @param array $variations
      */
-    public function kitAddFont($kitId, $font, $variations = array())
+    public function kitAddFont($kitId, $font, $variations = [])
     {
         if ($this->kitContainsFont($kitId, $font)) {
             # Font already in kit
             return;
         }
 
-        $newFontFamily = array('id' => $font);
+        $newFontFamily = ['id' => $font];
 
         # add only the valid variations
         if (!empty($variations)) {
             $fontAvailVars = $this->getFontVariations($font);
-            $newVars = array();
+            $newVars = [];
             foreach ($variations as $var) {
                 if (!isset($fontAvailVars[$var])) {
                     $newVars[] = $var;
@@ -342,7 +342,7 @@ class TypekitClient
         $fontData = $this->getFontFamily($font);
         $fontId = $fontData['family']['id'];
 
-        $families = array();
+        $families = [];
         foreach ($kit[2] as $idx => $family) {
             if ($fontId == $family['id']) {
                 continue;
@@ -362,16 +362,16 @@ class TypekitClient
     {
         $kit = $this->getKit($kitId);
         $kit = $kit['kit'];
-        $families = array();
+        $families = [];
         foreach ($kit['families'] as $f) {
-            $family = array(
+            $family = [
                 'id' => $f['id'],
                 'variations' => implode(',', $f['variations']),
-            );
+            ];
             $families[] = $family;
         }
 
-        return array($kit['name'], $kit['domains'], $families);
+        return [$kit['name'], $kit['domains'], $families];
     }
 
     /**
@@ -384,7 +384,7 @@ class TypekitClient
     public function getKitFonts($kitId)
     {
         $kit = $this->getKit($kitId);
-        $fonts = array();
+        $fonts = [];
         if (isset($kit['kit']) && isset($kit['kit']['families']) && !empty($kit['kit']['families'])) {
             foreach ($kit['kit']['families'] as $family) {
                 $fonts[] = $family['id'];
@@ -429,12 +429,12 @@ class TypekitClient
      * @param array $params
      * @return mixed
      */
-    private function makeRequest($method, $url, $params = array())
+    private function makeRequest($method, $url, $params = [])
     {
         $userAgent = 'PHP Typekit API Wrapper v' . $this->version;
-        $headers = array(
+        $headers = [
             'User-Agent' => $userAgent,
-        );
+        ];
 
         $body = $params;
         $options = compact('headers', 'body');
